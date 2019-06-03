@@ -204,7 +204,7 @@ qrcode为设备的唯一识别码，在每一台果麦新风设备上均有标�
 ```
 {
     "responseCode": "RESPONSE_OK",
-    "data": JSON（参见下表）,
+    "data": [JSON（参见下表）,...](JSONArray),
     "description": null
 }
 ```
@@ -212,10 +212,10 @@ qrcode为设备的唯一识别码，在每一台果麦新风设备上均有标�
 | 参数名称    | 类型   | 说明                                            |
 | ----------- | ------ | :---------------------------------------------- |
 | volume      | 整型   | 设备运行风速                                    |
-| mode        | 字符型 | 设备运行模式                                    |
-| heat        | 字符型 | GM320: 开/关, GM420: 关/500W/1000W |
+| mode        | JSON | 设备运行模式(action_name, action_operator)          |
+| heat        | 字符串 | GM320: 开/关, GM420: 关/500W/1000W |
 | light       | 整型   | 设备运行亮度                                    |
-| qrcode      | 字符型 | 该设备qrcode                                    |
+| qrcode      | 字符串 | 该设备qrcode                                    |
 | pm2_5       | 浮点型 | 室内PM2.5数值                                   |
 | co2         | 浮点型 | 室内二氧化碳数值                                |
 | temperature | 浮点型 | 室内温度                                        |
@@ -263,7 +263,7 @@ qrcode为设备的唯一识别码，在每一台果麦新风设备上均有标�
 ```
 {
     "responseCode": "RESPONSE_OK",
-    "data": JSON(参见下表）,
+    "data": [JSON（参见下表）,...](JSONArray),
     "description": null
 }
 ```
@@ -272,11 +272,11 @@ qrcode为设备的唯一识别码，在每一台果麦新风设备上均有标�
 | -------------- | ------ | ------------------------ |
 | o3             | 浮点型 | 设备所在城市二氧化碳数值 |
 | pm10           | 浮点型 | 设备所在城市PM10数值     |
-| cityId         | 字符型 | 设备所在城市city_id      |
+| cityId         | 字符串 | 设备所在城市city_id      |
 | co             | 浮点型 | 设备所在城市一氧化碳数值 |
 | createAt       | 长整型 | 城市数据更新时间时间戳   |
 | no2            | 浮点型 | 设备所在城市二氧化氮数值 |
-| cityName       | 字符型 | 设备所在城市名称         |
+| cityName       | 字符串 | 设备所在城市名称         |
 | aqiLevel       | 字符串 | 设备所在城市aqi等级      |
 | pm2_5          | 浮点型 | 设备所在城市PM2.5数值    |
 | so2            | 浮点型 | 设备所在城市二氧化硫数值 |
@@ -417,14 +417,14 @@ qrcode为设备的唯一识别码，在每一台果麦新风设备上均有标�
 ```
 {
     "responseCode": "RESPONSE_OK",
-    "data": JSON(参见下表）,
+    "data": [JSON（参见下表）,...](JSONArray),
     "description": null
 }
 ```
 
 | 参数名称  | 类型   | 说明               |
 | --------- | ------ | ------------------ |
-| qrcode    | 字符型 | 该设备qrcode       |
+| qrcode    | 字符串 | 该设备qrcode       |
 | minVolume | 整型   | 该设备可调最小风量 |
 | maxVolume | 整型   | 该设备可调最大风量 |
 
@@ -447,3 +447,48 @@ qrcode为设备的唯一识别码，在每一台果麦新风设备上均有标�
 - 未查询到该设备的model_id："未查询到该设备的model_id"
 - 查询该设备model_id失败："查询该设备model_id失败"
 - 查询风量可调范围失败："查询风量可调范围失败"
+
+### 9. 转换单台设备运行模式
+
+#### 请求URL
+`HTTP POST` `https://microservice.gmair.net/openplatform/machine/mode`
+
+#### 请求参数
+
+|参数名称|类型|说明|
+|:----------|:----------|:----------|
+|appid|字符串|必需|
+|qrcode|字符串|必需|
+|mode|字符串|必需()|
+
+#### 返回结果
+
+请求成功后，结果以JSON格式返回，格式为：
+
+```
+{
+    "responseCode": "", 
+    "data": "", 
+    "description": ""
+}
+```
+
+其中，responseCode有两种可能的取值，分别为：`RESPONSE_OK`,  `RESPONSE_ERROR`。
+
+##### (1) RESPONSE_OK：操作成功
+
+```
+{
+    "responseCode": "RESPONSE_OK",
+    "data": null,
+    "description": "已转换成...模式"
+}
+```
+
+##### (2) RESPONSE_ERROR：获取失败
+
+"description":
+
+- 未提供appid或qrcode："请提供正确的appid和qrcode"
+- appid未订阅该设备："请确保该appid有效，且已订阅该设备二维码"
+- ...(详见具体的"description")
