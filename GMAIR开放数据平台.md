@@ -330,7 +330,7 @@ qrcode为设备的唯一识别码，在每一台果麦新风设备上均有标�
 }
 ```
 
-##### (2) RESPONSE_ERROR：获取失败
+##### (2) RESPONSE_ERROR：操作失败
 
 "description":
 
@@ -377,7 +377,7 @@ qrcode为设备的唯一识别码，在每一台果麦新风设备上均有标�
 }
 ```
 
-##### (2) RESPONSE_ERROR：获取失败
+##### (2) RESPONSE_ERROR：操作失败
 
 "description":
 
@@ -485,7 +485,99 @@ qrcode为设备的唯一识别码，在每一台果麦新风设备上均有标�
 }
 ```
 
-##### (2) RESPONSE_ERROR：获取失败
+##### (2) RESPONSE_ERROR：操作失败
+
+"description":
+
+- 未提供appid或qrcode："请提供正确的appid和qrcode"
+- appid未订阅该设备："请确保该appid有效，且已订阅该设备二维码"
+- ...(详见具体的"description")
+
+### 10. 开启/关闭单台设备童锁
+
+#### 请求URL
+`HTTP POST` `https://microservice.gmair.net/openplatform/machine/lock/{value}`
+
+#### 请求参数
+
+|参数名称|类型|说明|
+|:----------|:----------|:----------|
+|value|字符串|必需，开启(on)，关闭(off)|
+|appid|字符串|必需|
+|qrcode|字符串|必需|
+
+#### 返回结果
+
+请求成功后，结果以JSON格式返回，格式为：
+
+```
+{
+    "responseCode": "", 
+    "data": "", 
+    "description": ""
+}
+```
+
+其中，responseCode有两种可能的取值，分别为：`RESPONSE_OK`,  `RESPONSE_ERROR`。
+
+##### (1) RESPONSE_OK：操作成功
+
+```
+{
+    "responseCode": "RESPONSE_OK",
+    "data": null,
+    "description": "操作成功"
+}
+```
+
+##### (2) RESPONSE_ERROR：操作失败
+
+"description":
+
+- 未提供appid或qrcode："请提供正确的appid和qrcode"
+- appid未订阅该设备："请确保该appid有效，且已订阅该设备二维码"
+- 开机失败："开启童锁失败"
+- 关机失败："关闭童锁失败"
+- 输入value值不为on或off："无法操作，请输入合法值"
+
+### 11. 调节单台设备辅热
+
+#### 请求URL
+`HTTP POST` `https://microservice.gmair.net/openplatform/machine/heat`
+
+#### 请求参数
+
+|参数名称|类型|说明|
+|:----------|:----------|:----------|
+|appid|字符串|必需|
+|qrcode|字符串|必需|
+|operation|字符串|必需(开启("on")/关闭("off")/1000W("warm")/500W("cosv"))|
+
+#### 返回结果
+
+请求成功后，结果以JSON格式返回，格式为：
+
+```
+{
+    "responseCode": "", 
+    "data": "", 
+    "description": ""
+}
+```
+
+其中，responseCode有两种可能的取值，分别为：`RESPONSE_OK`,  `RESPONSE_ERROR`。
+
+##### (1) RESPONSE_OK：操作成功
+
+```
+{
+    "responseCode": "RESPONSE_OK",
+    "data": null,
+    "description":"操作成功"
+}
+```
+
+##### (2) RESPONSE_ERROR：操作失败
 
 "description":
 
