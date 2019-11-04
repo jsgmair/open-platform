@@ -584,3 +584,53 @@ qrcode为设备的唯一识别码，在每一台果麦新风设备上均有标�
 - 未提供appid或qrcode："请提供正确的appid和qrcode"
 - appid未订阅该设备："请确保该appid有效，且已订阅该设备二维码"
 - ...(详见具体的"description")
+
+
+### 12. 查询设备滤网是否告警
+该接口只可用于查询GM420的滤网告警状态，GM320无此功能
+
+#### 请求URL
+`HTTP GET` `https://microservice.gmair.net/openplatform/machine/filter`
+
+|参数名称|类型|说明|
+|:----------|:----------|:----------|
+|appid|字符串|必需|
+|qrcode|字符串|必需|
+
+#### 返回结果
+
+请求成功后，结果以JSON格式返回，格式为：
+
+```
+{
+    "responseCode": "", 
+    "data": "", 
+    "description": ""
+}
+```
+
+其中，responseCode有两种可能的取值，分别为：`RESPONSE_OK`,  `RESPONSE_ERROR`。
+
+##### (1) RESPONSE_OK：操作成功
+
+```
+{
+    "responseCode": "RESPONSE_OK",
+    "data": JSON（参见下表）,
+    "description": null
+}
+```
+
+| 参数名称  | 类型   | 说明               |
+| --------- | ------ | ------------------ |
+| qrcode    | 字符串 | 该设备qrcode       |
+| lightStatus | 布尔值   | 该设备的滤网告警状态, false-无告警, true-告警 |
+| createAt | 长整型   | 该状态的更新时间 |
+
+##### (2) RESPONSE_ERROR：操作失败
+
+"description":
+
+- 未提供appid或qrcode："请提供正确的appid和qrcode"
+- appid未订阅该设备："请确保该appid有效，且已订阅该设备二维码"
+- ...(详见具体的"description")
